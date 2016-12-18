@@ -82,6 +82,11 @@ module.exports = {
       chunksSortMode: 'dependency'
     }),
 
+    new webpack.ContextReplacementPlugin(
+      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      __dirname
+    ),
+
     new DashboardPlugin(dashboard.setData)
   ],
   devServer: {

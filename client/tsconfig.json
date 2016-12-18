@@ -13,10 +13,9 @@
   "exclude": [
     "node_modules"
   ],
-  "files": [
-    "src/app/app.module.ts",
-    "src/app.ts",
-    "typings/index.d.ts"
+  "filesGlob": [
+    "src/app/**/*.ts",
+    "typings/**/*.d.ts"
   ],
   "compileOnSave": false,
   "buildOnSave": false
