@@ -9,19 +9,24 @@ module.exports = {
   entry: {
     vendor: './src/vendor.ts',
     polyfills: './src/polyfills.ts',
-    app: './src/app.ts'
+    app: './src/app.ts',
+    kotlin: './lib/kotlin-js/kotlin.js'
   },
   output: {
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].map',
     chunkFilename: '[id].chunk.js'
   },
+  devtool: '#source-map',   // Uncomment to enable SourceMaps
   resolve: {
     alias: {
       assets: __dirname + "/assets",
       content: __dirname + "/content"
     },
     extensions: ['.ts', '.js']
+  },
+  performance: {
+    hints: false
   },
   module: {
     rules: [
@@ -67,6 +72,7 @@ module.exports = {
       // Must disable mangle or else Angular is unhappy and no-worky
       mangle: false,
       comments: false,
+      sourceMap: true,
       compress: {
         warnings: false
       }
