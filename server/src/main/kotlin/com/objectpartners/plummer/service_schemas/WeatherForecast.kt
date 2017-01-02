@@ -1,6 +1,6 @@
 package com.objectpartners.plummer.service_schemas
 
-import java.util.*
+import java.util.Date
 
 data class WeatherForecast(override var id: Long,
                            override var timestamp: Date,
@@ -8,6 +8,7 @@ data class WeatherForecast(override var id: Long,
                            var high: Double,
                            var low: Double,
                            var precipitation: Precipitation,
-                           var cloudy: Boolean) : ForecastServiceDto<Long> {
+                           var cloudy: Boolean,
+                           var city: City) : ForecastServiceDto<Long> {
 
 }

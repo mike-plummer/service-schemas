@@ -9,15 +9,14 @@ module.exports = {
   entry: {
     vendor: './src/vendor.ts',
     polyfills: './src/polyfills.ts',
-    app: './src/app.ts',
-    kotlin: './lib/kotlin-js/kotlin.js'
+    app: './src/app.ts'
   },
   output: {
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].map',
     chunkFilename: '[id].chunk.js'
   },
-  devtool: '#source-map',   // Uncomment to enable SourceMaps
+  devtool: 'source-map',   // Uncomment to enable SourceMaps
   resolve: {
     alias: {
       assets: __dirname + "/assets",

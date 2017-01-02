@@ -1,3 +1,5 @@
 h2 Kotlin
   div(*ngFor="let resource of resources")
-    p {{ getResourceName(resource) }} - [ {{ getProperties(resource) }}
+    h3 {{ getResourceName(resource) }}
+    div(*ngFor="let property of getProperties(resource)")
+      p {{ property }}
