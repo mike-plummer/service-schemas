@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 }
 
@@ -39,5 +39,8 @@ repositories {
 }
 
 dependencies {
+    compile "org.springframework.boot:spring-boot-starter:${springVersion}"
+    compile "org.springframework.boot:spring-boot-starter-web:${springVersion}"
+    compile "javax.inject:javax.inject:1"
     compile "org.jetbrains.kotlin:kotlin-js-library:${kotlinVersion}"
 }
