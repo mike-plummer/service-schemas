@@ -1,4 +1,4 @@
-package com.objectpartners.plummer.service_schemas
+package com.objectpartners.plummer.service_schemas.dtos
 
 enum class Precipitation {
     RAIN,

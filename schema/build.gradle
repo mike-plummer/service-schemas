@@ -1,0 +1,66 @@
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator
+
+group 'org.jetbrains'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
+        }
+    }
+    dependencies {
+        classpath "com.kjetland:mbknor-jackson-jsonschema_2.12:${jsonSchemaVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin2js'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileKotlin2Js {
+    kotlinOptions.outputFile = "generated-schemas/opi-weather-schema.js"
+    kotlinOptions.moduleKind = "plain"
+    kotlinOptions.sourceMap = true
+    kotlinOptions.verbose = true
+    kotlinOptions.sourceMap = true
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+    compile "org.jetbrains.kotlin:kotlin-js-library:${kotlinVersion}"
+}
+
+task generateSchema(type: DefaultTask) {
+    doLast {
+        def ncl = new GroovyClassLoader()
+        ncl.addClasspath("${sourceSets.main.output.classesDir}")
+        configurations.compile.each { ncl.addClasspath(it.path) }
+
+        def objectMapper = new ObjectMapper()
+        def jsonSchemaGenerator = new JsonSchemaGenerator(objectMapper)
+        def clazz = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.ForecastServiceDto")
+
+        // TODO
+        def schema = jsonSchemaGenerator.generateJsonSchema(clazz)
+
+        new File("${projectDir}/generated-schemas/json-schema.json").witWriter('UTF-8') { writer ->
+            writer.write(schema)
+        }
+    }
+}
+
+generateSchema.dependsOn classes, compileKotlin2Js
