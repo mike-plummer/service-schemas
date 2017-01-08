@@ -1,1 +1,4 @@
 h2 JSON
+  div.grd(*ngFor="let resource of resources")
+    h3.grd-row.grd-row-col {{ resource[0] }}
+    p(*ngFor="let property of resource[1]") {{ property.name }}{{ property.required ? '*' : '' }} : {{ property.type }}

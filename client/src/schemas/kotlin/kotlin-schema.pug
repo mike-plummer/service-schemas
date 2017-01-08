@@ -1,5 +1,4 @@
 h2 Kotlin
   div.grd(*ngFor="let resource of resources")
     h3.grd-row.grd-row-col {{ getResourceName(resource) }}
-    p
-      span.p1(*ngFor="let property of getProperties(resource)") {{ property }}
+    p(*ngFor="let property of getProperties(resource)") {{ property }}
