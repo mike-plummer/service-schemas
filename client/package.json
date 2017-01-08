@@ -5,9 +5,10 @@
   "main": "app.bundle.js",
   "scripts": {
     "build": "webpack --p",
-    "start": "npm run prepareKotlinRuntime && webpack-dev-server --quiet",
+    "start": "npm run prepareKotlinRuntime && npm run generateSchemas && webpack-dev-server --quiet",
     "typings": "typings",
     "postinstall": "typings install",
+    "generateSchemas": "gradle -p .. generateSchemas",
     "prepareKotlinRuntime": "scripts/prepareKotlinRuntime.sh"
   },
   "repository": {

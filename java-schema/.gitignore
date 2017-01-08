@@ -3,3 +3,4 @@
 /build/
 /generated-schemas/
 *.iml
+/json-schema.json

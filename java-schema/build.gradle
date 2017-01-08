@@ -12,25 +12,16 @@ buildscript {
         }
     }
     dependencies {
+        classpath 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
         classpath "com.kjetland:mbknor-jackson-jsonschema_2.12:${jsonSchemaVersion}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 }
 
 apply plugin: 'idea'
-apply plugin: 'kotlin'
-apply plugin: 'kotlin2js'
+apply plugin: 'java'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-compileKotlin2Js {
-    kotlinOptions.outputFile = "generated-schemas/opi-weather-schema.js"
-    kotlinOptions.moduleKind = "plain"
-    kotlinOptions.sourceMap = true
-    kotlinOptions.verbose = true
-    kotlinOptions.sourceMap = true
-}
 
 repositories {
     mavenCentral()
@@ -40,11 +31,11 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
-    compile "org.jetbrains.kotlin:kotlin-js-library:${kotlinVersion}"
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+    compile project(':kotlin-schema')
 }
 
-task generateSchema(type: DefaultTask) {
+task generateJsonSchema(type: DefaultTask) {
     doLast {
         def ncl = new GroovyClassLoader()
         ncl.addClasspath("${sourceSets.main.output.classesDir}")
@@ -52,15 +43,16 @@ task generateSchema(type: DefaultTask) {
 
         def objectMapper = new ObjectMapper()
         def jsonSchemaGenerator = new JsonSchemaGenerator(objectMapper)
-        def clazz = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.ForecastServiceDto")
+        def clazz = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.ForecastServiceDtoWrapper")
 
         // TODO
         def schema = jsonSchemaGenerator.generateJsonSchema(clazz)
 
-        new File("${projectDir}/generated-schemas/json-schema.json").witWriter('UTF-8') { writer ->
-            writer.write(schema)
+        def schemaOutputFile = new File("${projectDir}/json-schema.json")
+        schemaOutputFile.withWriter('UTF-8') { writer ->
+            writer.write(schema.toString())
         }
     }
 }
 
-generateSchema.dependsOn classes, compileKotlin2Js
+generateJsonSchema.dependsOn classes

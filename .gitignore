@@ -1,1 +1,4 @@
 **/.idea/
+/generated-schemas/
+/build/
+/.gradle/

@@ -1,0 +1,19 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+task generateSchemas() {
+    dependsOn ':kotlin-schema:compileKotlin2Js'
+    dependsOn ':java-schema:generateJsonSchema'
+}
