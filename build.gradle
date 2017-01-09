@@ -15,5 +15,6 @@ dependencies {
 
 task generateSchemas() {
     dependsOn ':kotlin-schema:compileKotlin2Js'
+    dependsOn ':java-schema:generateReflectiveProperties'
     dependsOn ':java-schema:generateJsonSchema'
 }

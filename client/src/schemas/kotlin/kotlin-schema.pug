@@ -1,4 +1,6 @@
-h2 Kotlin
+span((click)="toggle()")
+  h2 {{ icon }} Kotlin
+div(*ngIf="expanded")
   div.grd(*ngFor="let resource of resources")
     h3.grd-row.grd-row-col {{ getResourceName(resource) }}
     p(*ngFor="let property of getProperties(resource)") {{ property }}

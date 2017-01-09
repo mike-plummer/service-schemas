@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 export class JsonSchemaComponent implements OnInit {
 
     public resources: any[][];
+    public icon: string = '▶';
+    public expanded: boolean = false;
+
+    toggle(): void {
+        this.expanded = !this.expanded;
+        this.icon = this.expanded ? '▼' : '▶';
+    }
 
     ngOnInit(): void {
         const schema: any = require('../../../../java-schema/json-schema.json');

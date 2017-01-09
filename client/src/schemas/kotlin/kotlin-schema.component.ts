@@ -10,6 +10,13 @@ declare var kotlin: any;
 export class KotlinSchemaComponent implements OnInit {
 
     public resources: any[];
+    public icon: string = '▶';
+    public expanded: boolean = false;
+
+    toggle(): void {
+        this.expanded = !this.expanded;
+        this.icon = this.expanded ? '▼' : '▶';
+    }
 
     ngOnInit(): void {
         const schema = require('../../../../kotlin-schema/generated-schemas/opi-weather-schema.js');
