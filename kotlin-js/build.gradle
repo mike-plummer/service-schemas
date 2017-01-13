@@ -1,0 +1,48 @@
+group 'org.jetbrains'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'kotlin2js'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
+    }
+}
+
+sourceSets {
+    main {
+        kotlin {
+            srcDir "${project(':kotlin-schema').projectDir.path}/src/main/kotlin"
+        }
+    }
+}
+
+compileKotlin2Js {
+    doFirst {
+        configurations.runtime.each { println it }
+        new File("${projectDir}/build/generated-schema").delete()
+    }
+    kotlinOptions.outputFile = "${projectDir}/build/generated-schema/opi-weather-schema.js"
+    kotlinOptions.moduleKind = "plain"
+    kotlinOptions.verbose = true
+    kotlinOptions.sourceMap = true
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-js-library:${kotlinVersion}"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+}

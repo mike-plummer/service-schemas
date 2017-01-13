@@ -16,7 +16,7 @@ export class JsonSchemaComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const schema: any = require('../../../../java-schema/json-schema.json');
+        const schema: any = require('../../../../java-schema/build/json-schema.json');
 
         this.resources = Reflect.ownKeys(schema.definitions)
             .map(resourceName => [resourceName, this.buildProperties(schema.definitions[resourceName])]);

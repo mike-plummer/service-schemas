@@ -15,7 +15,7 @@ export class ReflectionSchemaComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const schema: any = require('../../../../java-schema/reflective-properties.json');
+        const schema: any = require('../../../../java-schema/build/reflective-properties.json');
 
         this.resources = Reflect.ownKeys(schema)
             .map(resourceName => [resourceName, this.buildProperties(schema[resourceName])]);

@@ -9,28 +9,12 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.kjetland:mbknor-jackson-jsonschema_2.12:${jsonSchemaVersion}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 }
 
 apply plugin: 'idea'
-apply plugin: 'kotlin2js'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-compileKotlin2Js {
-    doFirst {
-        new File("${projectDir}/generated-schemas").delete()
-    }
-    kotlinOptions.outputFile = "${projectDir}/generated-schemas/opi-weather-schema.js"
-    kotlinOptions.moduleKind = "plain"
-    kotlinOptions.sourceMap = true
-    kotlinOptions.verbose = true
-    kotlinOptions.sourceMap = true
-    kotlinOptions.suppressWarnings = true
-}
+apply plugin: 'kotlin'
 
 repositories {
     mavenCentral()
@@ -39,6 +23,9 @@ repositories {
     }
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-js-library:${kotlinVersion}"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
 }

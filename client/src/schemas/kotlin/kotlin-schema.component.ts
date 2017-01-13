@@ -19,7 +19,7 @@ export class KotlinSchemaComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const schema = require('../../../../kotlin-schema/generated-schemas/opi-weather-schema.js');
+        const schema = require('../../../../kotlin-js/build/generated-schema/opi-weather-schema.js');
         const resourceTypes = schema['opi-weather-schema'].com.objectpartners.plummer.service_schemas.dtos;
         const resourceNames = Reflect.ownKeys(resourceTypes);
 

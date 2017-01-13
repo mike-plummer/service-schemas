@@ -3,5 +3,3 @@
 /build/
 /generated-schemas/
 *.iml
-/json-schema.json
-/reflective-properties.json

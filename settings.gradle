@@ -1,2 +1,3 @@
 include 'kotlin-schema'
+include 'kotlin-js'
 include 'java-schema'

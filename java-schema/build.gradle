@@ -1,6 +1,4 @@
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.kjetland.jackson.jsonSchema.JsonSchemaConfig
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator
 
 group 'org.jetbrains'
@@ -9,9 +7,6 @@ version '1.0-SNAPSHOT'
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
-        }
     }
     dependencies {
         classpath 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
@@ -37,27 +32,29 @@ dependencies {
     compile project(':kotlin-schema')
 }
 
-task generateReflectiveProperties(type: DefaultTask) {
-    def ncl = new GroovyClassLoader()
-    ncl.addClasspath("${sourceSets.main.output.classesDir}")
-    configurations.compile.each { ncl.addClasspath(it.path) }
+task generateReflectiveProperties(type: DefaultTask, dependsOn: ['classes']) {
+    doLast {
+        def ncl = new GroovyClassLoader()
+        ncl.addClasspath("${sourceSets.main.output.classesDir}")
+        configurations.compile.each { ncl.addClasspath(it.path) }
 
-    def weatherForecast = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.WeatherForecast")
-    def extendedForecast = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.ExtendedForecast")
-    def city = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.City")
+        def weatherForecast = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.WeatherForecast")
+        def extendedForecast = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.ExtendedForecast")
+        def city = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.City")
 
-    def schema = new ObjectMapper().writeValueAsString([
-            (weatherForecast.simpleName) : buildProperties(weatherForecast),
-            (extendedForecast.simpleName): buildProperties(extendedForecast),
-            (city.simpleName)            : buildProperties(city)
-    ])
+        def schema = new ObjectMapper().writeValueAsString([
+                (weatherForecast.simpleName) : buildProperties(weatherForecast),
+                (extendedForecast.simpleName): buildProperties(extendedForecast),
+                (city.simpleName)            : buildProperties(city)
+        ])
 
-    def schemaOutputFile = new File("${projectDir}/reflective-properties.json")
+        def schemaOutputFile = new File("${projectDir}/build/reflective-properties.json")
 
-    schemaOutputFile.delete()
+        schemaOutputFile.delete()
 
-    schemaOutputFile.withWriter('UTF-8') { writer ->
-        writer.write(schema.toString())
+        schemaOutputFile.withWriter('UTF-8') { writer ->
+            writer.write(schema.toString())
+        }
     }
 }
 
@@ -67,7 +64,7 @@ private static <T> T buildProperties(Class<T> clazz) {
     }
 }
 
-task generateJsonSchema(type: DefaultTask) {
+task generateJsonSchema(type: DefaultTask, dependsOn: ['classes']) {
     doLast {
         def ncl = new GroovyClassLoader()
         ncl.addClasspath("${sourceSets.main.output.classesDir}")
@@ -78,7 +75,7 @@ task generateJsonSchema(type: DefaultTask) {
         def clazz = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.ForecastServiceDtoWrapper")
 
         def schema = jsonSchemaGenerator.generateJsonSchema(clazz)
-        def schemaOutputFile = new File("${projectDir}/json-schema.json")
+        def schemaOutputFile = new File("${projectDir}/build/json-schema.json")
 
         schemaOutputFile.delete()
 
@@ -87,5 +84,3 @@ task generateJsonSchema(type: DefaultTask) {
         }
     }
 }
-
-generateJsonSchema.dependsOn classes

@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
         @JsonSubTypes.Type(WeatherForecast.class),
         @JsonSubTypes.Type(ExtendedForecast.class),
         @JsonSubTypes.Type(City.class)
-}
-)
+})
 interface ForecastServiceDtoWrapper<T> extends ForecastServiceDto<T> {
 
 }

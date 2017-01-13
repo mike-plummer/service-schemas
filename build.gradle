@@ -1,20 +1,11 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
+task cleanAll() {
+    dependsOn ':kotlin-js:clean'
+    dependsOn ':java-schema:clean'
+    dependsOn ':kotlin-schema:clean'
 }
 
 task generateSchemas() {
-    dependsOn ':kotlin-schema:compileKotlin2Js'
+    dependsOn ':kotlin-js:compileKotlin2Js'
     dependsOn ':java-schema:generateReflectiveProperties'
     dependsOn ':java-schema:generateJsonSchema'
 }
