@@ -5,4 +5,5 @@ import '@angular/core';
 import '@angular/common';
 
 // Third-party libs
+require('lodash/core');
 require('furtive/scss/all.scss');

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { get, isFunction, values, omitBy, pickBy, times } from 'lodash';
 
 // Global Kotlin runtime loaded in index.html
-declare var kotlin: any;
+declare const kotlin: any;
 
 @Component({
     selector: 'kotlin-schema',
@@ -10,6 +11,8 @@ declare var kotlin: any;
 export class KotlinSchemaComponent implements OnInit {
 
     public resources: any[];
+    public functions: any[];
+    public functionResults: any = {};
     public icon: string = '▶';
     public expanded: boolean = false;
 
@@ -19,43 +22,89 @@ export class KotlinSchemaComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const schema = require('../../../../kotlin-js/build/generated-schema/opi-weather-schema.js');
-        const resourceTypes = schema['opi-weather-schema'].com.objectpartners.plummer.service_schemas.dtos;
-        const resourceNames = Reflect.ownKeys(resourceTypes);
+        const schema: any = require('../../../../kotlin-js/build/generated-schema/opi-weather-schema.js');
+        const schemaTypes: any = schema['opi-weather-schema'].com.objectpartners.plummer.service_schemas.dtos;
+        const resourceTypes: any = omitBy(schemaTypes, type => !type.$metadata$);
+        const functionTypes: any = pickBy(schemaTypes, type => !type.$metadata$);
 
-        this.resources = resourceNames
-            .map(key => resourceTypes[key]);
+        this.resources = values(resourceTypes);
+        this.functions = values(functionTypes)
     }
 
-    getResourceName(resourceType: any): string {
+    getFunctionTypeName(functionType: any): string {
+        return this.getFunctionDisplayName(functionType.name, functionType);
+    }
+
+    invokeFunctionType(functionType: any): any {
+        this.functionResults[functionType] = functionType();
+    }
+
+    getResourceTypeName(resourceType: any): string {
         return resourceType.name;
     }
 
-    getProperties(resourceType: any): string[] {
-        const resource = new resourceType();
+    getInheritance(resourceType: any): string {
+        const baseClasses: any[] = get(resourceType, '$metadata$.baseClasses') as any[];
+        if (baseClasses) {
+            const extensions = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === kotlin.TYPE.CLASS).map(clazz => clazz.name);
+            const implementations = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === kotlin.TYPE.TRAIT).map(clazz => clazz.name);
 
-        if (resource instanceof kotlin.kotlin.Enum) {
-            // IS AN ENUM
-            return [`Enum - [${resourceType.values()}]`];
-        } else {
-            // NOT AN ENUM
+            let value = '';
+            if (extensions.length) {
+                value += ` extends ${extensions.join(', ')}`;
+            }
+            if (implementations.length) {
+                value += ` implements ${implementations.join(', ')}`;
+            }
 
+            return value;
+        }
+
+        return '';
+    }
+
+    getPropertiesForResourceType(resourceType: any): string[] {
+        try {
             // This will eventually be the "right" way to do reflection of Kotlin classes in JS
-            const kclass = kotlin.getKClass(resourceType);
+            // const kclass: any = kotlin.getKClass(resourceType);
             // console.log(kclass.qualifiedName);
             // console.log(kclass.supertypes);
             // console.log(kclass.members);
-            // console.log(kclass.members);
 
             // Doing it this way is a 'good enough' workaround in pure JS, but isn't perfect
-            // and can't supply type information on primitive fields
-            const propertyNames = [];
-            for (let propertyName in resource) {
-                propertyNames.push(propertyName);
+            // and can't supply type information on fields
+            const resource = new resourceType();
+
+            if (resource instanceof kotlin.kotlin.Enum) {
+                // IS AN ENUM
+                return resourceType.values();
             }
-            return propertyNames
-                .filter(propertyName => !propertyName.includes("$"))
-                .filter(propertyName => !/component[0-9]+/.test(propertyName));
+
+            const names: string[] = [];
+
+            let target = resource;
+            while (target && target !== Object.prototype) {
+                Object.getOwnPropertyNames(target)
+                    .filter(member => !/component[0-9]+|constructor|\$/.test(member))
+                    .forEach(member => {
+                        const value = target[member];
+
+                        if (isFunction(value)) {
+                            names.push(this.getFunctionDisplayName(member, value));
+                        } else {
+                            names.push(member);
+                        }
+                    });
+                target = Object.getPrototypeOf(target);
+            }
+
+            return names;
+        } catch (err) {
+            console.log(err);
         }
+    }
+
+    private getFunctionDisplayName(name, fn) {
+        return `${name}( ${times(fn.length, () => 'arg').join(', ')} )`;
     }
 }

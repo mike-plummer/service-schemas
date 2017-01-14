@@ -2,5 +2,11 @@ span((click)="toggle()")
   h2 {{ icon }} Kotlin
 div(*ngIf="expanded")
   div.grd(*ngFor="let resource of resources")
-    h3.grd-row.grd-row-col {{ getResourceName(resource) }}
-    p(*ngFor="let property of getProperties(resource)") {{ property }}
+    h3.grd-row.grd-row-col {{ getResourceTypeName(resource) }} {{ getInheritance(resource) }}
+    div(*ngFor="let property of getPropertiesForResourceType(resource)") {{ property }}
+  div.grd(*ngFor="let fn of functions")
+    div.grd-row
+      h3.grd-row-col {{ getFunctionTypeName(fn) }}
+    div.grd-row
+      button.grd-row-col((click)="invokeFunctionType(fn)") Invoke
+      span.grd-row-col {{ functionResults[fn] }}
