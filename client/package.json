@@ -9,7 +9,7 @@
     "typings": "typings",
     "postinstall": "typings install",
     "generateSchemas": "gradle -p .. cleanAll generateSchemas",
-    "prepareKotlinRuntime": "scripts/prepareKotlinRuntime.sh"
+    "prepareKotlinRuntime": "gradle -p .. prepareKotlinJsRuntime"
   },
   "repository": {
     "type": "git",

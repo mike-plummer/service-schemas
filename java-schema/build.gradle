@@ -1,9 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator
 
-group 'org.jetbrains'
-version '1.0-SNAPSHOT'
-
 buildscript {
     repositories {
         mavenCentral()
@@ -13,6 +10,9 @@ buildscript {
         classpath "com.kjetland:mbknor-jackson-jsonschema_2.12:${jsonSchemaVersion}"
     }
 }
+
+group 'com.objectpartners.plummer'
+version '1.0-SNAPSHOT'
 
 apply plugin: 'idea'
 apply plugin: 'java'
@@ -48,7 +48,7 @@ task generateReflectiveProperties(type: DefaultTask, dependsOn: ['classes']) {
                 (city.simpleName)            : buildProperties(city)
         ])
 
-        def schemaOutputFile = new File("${projectDir}/build/reflective-properties.json")
+        def schemaOutputFile = new File("${buildDir}/reflective-properties.json")
 
         schemaOutputFile.delete()
 
@@ -75,7 +75,7 @@ task generateJsonSchema(type: DefaultTask, dependsOn: ['classes']) {
         def clazz = ncl.loadClass("com.objectpartners.plummer.service_schemas.dtos.ForecastServiceDtoWrapper")
 
         def schema = jsonSchemaGenerator.generateJsonSchema(clazz)
-        def schemaOutputFile = new File("${projectDir}/build/json-schema.json")
+        def schemaOutputFile = new File("${buildDir}/json-schema.json")
 
         schemaOutputFile.delete()
 

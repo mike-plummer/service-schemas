@@ -1,5 +1,4 @@
-group 'org.jetbrains'
-version '1.0-SNAPSHOT'
+import de.undercouch.gradle.tasks.download.Download
 
 buildscript {
     repositories {
@@ -12,6 +11,13 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 }
+
+plugins {
+    id "de.undercouch.download" version "3.1.2"
+}
+
+group 'com.objectpartners.plummer'
+version '1.0-SNAPSHOT'
 
 apply plugin: 'idea'
 apply plugin: 'kotlin2js'
@@ -34,9 +40,9 @@ sourceSets {
 compileKotlin2Js {
     doFirst {
         configurations.runtime.each { println it }
-        new File("${projectDir}/build/generated-schema").delete()
+        new File("${buildDir}/generated-schema").delete()
     }
-    kotlinOptions.outputFile = "${projectDir}/build/generated-schema/opi-weather-schema.js"
+    kotlinOptions.outputFile = "${buildDir}/generated-schema/opi-weather-schema.js"
     kotlinOptions.moduleKind = "plain"
     kotlinOptions.verbose = true
     kotlinOptions.sourceMap = true
@@ -45,4 +51,15 @@ compileKotlin2Js {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-js-library:${kotlinVersion}"
     compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+}
+
+task prepareKotlinJsRuntime(type: Copy, dependsOn: ['downloadKotlinJsRuntime']) {
+    from zipTree(file("${projectDir}/lib/kotlin-js-${kotlinVersion}.jar"))
+    into file("${projectDir}/../client/lib/kotlin-js")
+}
+
+task downloadKotlinJsRuntime(type: Download) {
+    overwrite false
+    src "http://dl.bintray.com/kotlin/kotlin-eap-1.1/org/jetbrains/kotlin/kotlin-js-library/${kotlinVersion}/kotlin-js-library-${kotlinVersion}.jar"
+    dest "${projectDir}/lib/kotlin-js-${kotlinVersion}.jar"
 }
