@@ -2,7 +2,7 @@ span((click)="toggle()")
   h2 {{ icon }} JSON
 div(*ngIf="expanded")
   div.grd(*ngFor="let resource of resources")
-    div.grd-row.h3.bg--light-gray.px1
+    div.grd-row.h4.bg--light-gray.px1
       span.grd-row-col {{ resource[0] }}
     div.grd-row.px1(*ngFor="let property of resource[1]")
       span.grd-row-col {{ property.name }}{{ property.required ? '*' : '' }} : {{ property.type }}

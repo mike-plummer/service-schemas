@@ -8,8 +8,8 @@
     "start": "npm run prepareKotlinRuntime && npm run generateSchemas && webpack-dev-server --quiet",
     "typings": "typings",
     "postinstall": "typings install",
-    "generateSchemas": "gradle -p .. cleanAll generateSchemas",
-    "prepareKotlinRuntime": "gradle -p .. prepareKotlinJsRuntime"
+    "generateSchemas": "gradle -p .. cleanAll generateSchemas --info",
+    "prepareKotlinRuntime": "gradle -p .. prepareKotlinJsRuntime --info"
   },
   "repository": {
     "type": "git",

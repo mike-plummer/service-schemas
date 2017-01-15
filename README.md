@@ -13,7 +13,8 @@ Simple and flexible. Writing your own reflection-based schema generator gives yo
 and power, but can be hard to write anything beyond the very basic.
 
 Pros: Simple, very customizable
-Cons: Least capable, non-standardized, hard to integrate
+
+Cons: Non-standardized, hard to integrate, manual
 
 ### JSON Schema
 By far the most capable out-of-the-box, JSON Schema is a standard for describing (duh) a schema in JSON.
@@ -21,6 +22,7 @@ By default it includes fields and datatypes, and depending on what version & imp
 handles inheritance and can even parse Jackson annotations.
 
 Pros: Easy, comprehensive
+
 Cons: Can be hard to customize, may tie you to a specific JSON implementation
 
 ### Kotlin
@@ -28,5 +30,28 @@ This is one of the most exciting capabilities on the horizon. Kotlin is a JVM la
 or Scala which is cool in its own right, but has a secret superpower - it can compile directly to JavaScript
 too.
 
-Pros:
-Cons:
+Pros: Standardized by the compiler, share class *and* utility code!
+
+Cons: KotlinJS limits classes that can be used in domain objects, not yet feature complete
+
+## Requirements
+- Java 8
+- Gradle 3+
+- Node & NPM
+
+## Instructions
+1. Clone this repo
+2. Navigate to `{project root}/client`
+3. Execute `npm install`
+3. Execute `npm start`
+4. Gradle will launch and perform the following
+    a. Download & extract KotlinJS runtime
+    b. Download dependencies
+    c. Compile Kotlin schema, generate KotlinJS, JSONSchema, and Reflective definitions
+5. Once Gradle is finished NPM will launch Webpack which will deploy the example webapp
+6. Navigate to `http://localhost:8000` to view different schema definitions in action
+7. (Optional) Customize the schema
+    a. `ctrl-c` to exit Webpack if running
+    b. Make an update to the Kotlin files under the `kotlin-schema` project. Add a field to the DTOs or a new package-level function to Utilities.kt
+    c. Re-run `npm start` and load webapp - your new change should automatically appear in the schemas
+8. To quit type `ctrl-c`

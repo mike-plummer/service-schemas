@@ -32,6 +32,10 @@ dependencies {
     compile project(':kotlin-schema')
 }
 
+/**
+ * Very basic reflective class scanner to list out field names & types. Can easily be expanded
+ * to add Enums, superclass/interfaces
+ */
 task generateReflectiveProperties(type: DefaultTask, dependsOn: ['classes']) {
     doLast {
         def ncl = new GroovyClassLoader()
@@ -64,6 +68,9 @@ private static <T> T buildProperties(Class<T> clazz) {
     }
 }
 
+/**
+ * Generate JSONSchema with generator optimized for using Jackson annotations.
+ */
 task generateJsonSchema(type: DefaultTask, dependsOn: ['classes']) {
     doLast {
         def ncl = new GroovyClassLoader()

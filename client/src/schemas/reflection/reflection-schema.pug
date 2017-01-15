@@ -2,7 +2,7 @@ span((click)="toggle()")
   h2 {{ icon }} Reflection
 div(*ngIf="expanded")
   div.grd(*ngFor="let resource of resources")
-    div.h3.grd-row.px1.bg--light-gray
+    div.h4.grd-row.px1.bg--light-gray
       span.grd-row-col {{ resource[0] }}
     div.grd-row.px1(*ngFor="let property of resource[1]")
       span.grd-row-col {{ property[0] }} : {{ property[1] }}
