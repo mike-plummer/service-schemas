@@ -1,5 +1,3 @@
-import de.undercouch.gradle.tasks.download.Download
-
 buildscript {
     repositories {
         mavenCentral()
@@ -10,10 +8,6 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
-}
-
-plugins {
-    id "de.undercouch.download" version "3.1.2"
 }
 
 group 'com.objectpartners.plummer'
@@ -42,12 +36,13 @@ sourceSets {
  * each time the task is run to avoid caching issues.
  */
 compileKotlin2Js {
+    def destFilename = "${projectDir}/../client/lib/opi-weather-schema.js";
     doFirst {
         configurations.runtime.each { println it }
-        new File("${buildDir}/generated-schema").delete()
+        new File(destFilename).delete()
     }
-    kotlinOptions.outputFile = "${buildDir}/generated-schema/opi-weather-schema.js"
-    kotlinOptions.moduleKind = "plain"
+    kotlinOptions.outputFile = destFilename
+    kotlinOptions.moduleKind = "umd"
     kotlinOptions.verbose = true
     kotlinOptions.sourceMap = true
 }
@@ -55,21 +50,4 @@ compileKotlin2Js {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-js-library:${kotlinVersion}"
     compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
-}
-
-/**
- * Unzip the downloaded Kotlin JS Runtime JAR and extract 'kotlin.js' file for inclusion in the webapp
- */
-task prepareKotlinJsRuntime(type: Copy, dependsOn: ['downloadKotlinJsRuntime']) {
-    from zipTree(file("${projectDir}/lib/kotlin-js-${kotlinVersion}.jar"))
-    into file("${projectDir}/../client/lib/kotlin-js")
-}
-
-/**
- * Download Kotlin JS Runtime JAR from public repo. Will only download if file doesn't already exist
- */
-task downloadKotlinJsRuntime(type: Download) {
-    overwrite false
-    src "http://dl.bintray.com/kotlin/kotlin-eap-1.1/org/jetbrains/kotlin/kotlin-js-library/${kotlinVersion}/kotlin-js-library-${kotlinVersion}.jar"
-    dest "${projectDir}/lib/kotlin-js-${kotlinVersion}.jar"
 }

@@ -1,19 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractSchemaComponent } from '../AbstractSchemaComponent';
 
 @Component({
     selector: 'json-schema',
     templateUrl: 'json-schema.pug'
 })
-export class JsonSchemaComponent implements OnInit {
+export class JsonSchemaComponent extends AbstractSchemaComponent implements OnInit {
 
     public resources: any[][];
-    public icon: string = '▶';
-    public expanded: boolean = false;
-
-    toggle(): void {
-        this.expanded = !this.expanded;
-        this.icon = this.expanded ? '▼' : '▶';
-    }
 
     ngOnInit(): void {
         const schema: any = require('../../../../java-schema/build/json-schema.json');

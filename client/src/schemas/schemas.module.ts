@@ -7,8 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 @NgModule({
     imports: [ BrowserModule ],
     exports: [ JsonSchemaComponent, KotlinSchemaComponent, ReflectionSchemaComponent ],
-    declarations: [ JsonSchemaComponent, KotlinSchemaComponent, ReflectionSchemaComponent ],
-    providers: [ ]
+    declarations: [ JsonSchemaComponent, KotlinSchemaComponent, ReflectionSchemaComponent ]
 })
 export class SchemasModule {
     constructor() {

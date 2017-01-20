@@ -6,8 +6,7 @@ import { SchemasModule } from '../schemas/schemas.module';
 @NgModule({
     imports: [ BrowserModule, SchemasModule ],
     declarations: [ AppComponent ],
-    bootstrap: [ AppComponent ],
-    providers: [ ]
+    bootstrap: [ AppComponent ]
 })
 export class AppModule {
     constructor() {

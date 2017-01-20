@@ -7,8 +7,8 @@ var dashboard = new Dashboard();
 
 module.exports = {
   entry: {
-    vendor: './src/vendor.ts',
-    polyfills: './src/polyfills.ts',
+    schema: './lib/opi-weather-schema.js',
+    kotlin: './node_modules/kotlin/kotlin.js',
     app: './src/app.ts'
   },
   output: {
@@ -16,7 +16,7 @@ module.exports = {
     sourceMapFilename: '[name].map',
     chunkFilename: '[id].chunk.js'
   },
-  devtool: 'source-map',   // Uncomment to enable SourceMaps
+  devtool: 'source-map',
   resolve: {
     alias: {
       assets: __dirname + "/assets",
@@ -34,7 +34,7 @@ module.exports = {
         loaders: [
           'awesome-typescript-loader',
           'angular2-template-loader'
-          ]
+        ]
       }, {
         test: /\.html$/,
         exclude: ['./src/index.html'],
@@ -68,8 +68,9 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      // Must disable mangle or else Angular is unhappy and no-worky
-      mangle: false,
+      exclude: [ 'schema.bundle.js' ],
+      minimize: true,
+      mangle: true,
       comments: false,
       sourceMap: true,
       compress: {
@@ -78,7 +79,7 @@ module.exports = {
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
-      name: ['polyfills', 'vendor'].reverse()
+      name: ['schema', 'kotlin']
     }),
 
     new HtmlWebpackPlugin({

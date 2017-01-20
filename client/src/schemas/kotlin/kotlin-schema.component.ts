@@ -1,29 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { get, isFunction, values, omitBy, pickBy, times } from 'lodash';
-
-// Global Kotlin runtime loaded in index.html
-declare const kotlin: any;
+import { AbstractSchemaComponent } from '../AbstractSchemaComponent';
 
 @Component({
     selector: 'kotlin-schema',
     templateUrl: 'kotlin-schema.pug'
 })
-export class KotlinSchemaComponent implements OnInit {
+export class KotlinSchemaComponent extends AbstractSchemaComponent implements OnInit {
+
+    private kotlin: any = require('kotlin');
 
     public resources: any[];
     public functions: any[];
     public functionResults: any = {};
-    public icon: string = '▶';
-    public expanded: boolean = false;
-
-    toggle(): void {
-        this.expanded = !this.expanded;
-        this.icon = this.expanded ? '▼' : '▶';
-    }
 
     ngOnInit(): void {
-        const schema: any = require('../../../../kotlin-js/build/generated-schema/opi-weather-schema.js');
-        const schemaTypes: any = schema['opi-weather-schema'].com.objectpartners.plummer.service_schemas.dtos;
+        const schema: any = require('../../../lib/opi-weather-schema.js');
+        const schemaTypes: any = schema.com.objectpartners.plummer.service_schemas.dtos;
         const resourceTypes: any = omitBy(schemaTypes, type => !type.$metadata$);
         const functionTypes: any = pickBy(schemaTypes, type => !type.$metadata$);
 
@@ -46,8 +39,8 @@ export class KotlinSchemaComponent implements OnInit {
     getInheritance(resourceType: any): string {
         const baseClasses: any[] = get(resourceType, '$metadata$.baseClasses') as any[];
         if (baseClasses) {
-            const extensions = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === kotlin.TYPE.CLASS).map(clazz => clazz.name);
-            const implementations = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === kotlin.TYPE.TRAIT).map(clazz => clazz.name);
+            const extensions = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === this.kotlin.TYPE.CLASS).map(clazz => clazz.name);
+            const implementations = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === this.kotlin.TYPE.TRAIT).map(clazz => clazz.name);
 
             let value = '';
             if (extensions.length) {
@@ -76,7 +69,7 @@ export class KotlinSchemaComponent implements OnInit {
             // and can't supply type information on fields
             const resource = new resourceType();
 
-            if (resource instanceof kotlin.kotlin.Enum) {
+            if (resource instanceof this.kotlin.kotlin.Enum) {
                 return resourceType.values();
             }
 

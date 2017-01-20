@@ -1,18 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractSchemaComponent } from '../AbstractSchemaComponent';
 
 @Component({
     selector: 'reflection-schema',
     templateUrl: 'reflection-schema.pug'
 })
-export class ReflectionSchemaComponent implements OnInit {
+export class ReflectionSchemaComponent extends AbstractSchemaComponent implements OnInit {
     public resources: any[][];
-    public icon: string = '▶';
-    public expanded: boolean = false;
-
-    toggle(): void {
-        this.expanded = !this.expanded;
-        this.icon = this.expanded ? '▼' : '▶';
-    }
 
     ngOnInit(): void {
         const schema: any = require('../../../../java-schema/build/reflective-properties.json');

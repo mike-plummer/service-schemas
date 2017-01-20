@@ -1,5 +1,5 @@
-span.h2((click)="toggle()")
-  span {{ icon }} Kotlin
+span((click)="toggle()")
+  h2 {{ icon }} Kotlin
 div(*ngIf="expanded")
   div.grd(*ngFor="let resource of resources")
     div.h4.grd-row.bg--light-gray.px1
