@@ -6,8 +6,6 @@
   "scripts": {
     "build": "webpack --p",
     "start": "npm run prepareKotlinRuntime && npm run generateSchemas && webpack-dev-server --quiet",
-    "typings": "typings",
-    "postinstall": "typings install",
     "generateSchemas": "gradle -p .. cleanAll generateSchemas --info",
     "prepareKotlinRuntime": "gradle -p .. prepareKotlinJsRuntime --info"
   },
@@ -22,12 +20,11 @@
   },
   "homepage": "https://github.com/mike-plummer/service-schemas#readme",
   "dependencies": {
-    "@angular/common": "2.4.3",
-    "@angular/compiler": "2.4.3",
-    "@angular/core": "2.4.3",
-    "@angular/platform-browser": "2.4.3",
-    "@angular/platform-browser-dynamic": "2.4.3",
-    "@types/lodash": "^4.14.50",
+    "@angular/common": "2.4.4",
+    "@angular/compiler": "2.4.4",
+    "@angular/core": "2.4.4",
+    "@angular/platform-browser": "2.4.4",
+    "@angular/platform-browser-dynamic": "2.4.4",
     "core-js": "^2.4.1",
     "furtive": "^2.3.0",
     "lodash": "^4.17.4",
@@ -36,6 +33,9 @@
     "zone.js": "^0.7.2"
   },
   "devDependencies": {
+    "@types/core-js": "^0.9.35",
+    "@types/lodash": "^4.14.50",
+    "@types/node": "^7.0.0",
     "angular2-template-loader": "^0.6.0",
     "awesome-typescript-loader": "3.0.0-beta.18",
     "css-loader": "^0.26.1",
@@ -49,10 +49,9 @@
     "sass-loader": "^4.1.1",
     "style-loader": "^0.13.1",
     "typescript": "~2.0.10",
-    "typings": "2.1.0",
     "url-loader": "^0.5.7",
-    "webpack": "2.2.0-rc.4",
+    "webpack": "2.2.0",
     "webpack-dashboard": "0.2.1",
-    "webpack-dev-server": "2.2.0-rc.0"
+    "webpack-dev-server": "2.2.0"
   }
 }

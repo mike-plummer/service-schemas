@@ -14,8 +14,7 @@
     "node_modules"
   ],
   "filesGlob": [
-    "src/app/**/*.ts",
-    "typings/**/*.d.ts"
+    "src/app/**/*.ts"
   ],
   "compileOnSave": false,
   "buildOnSave": false

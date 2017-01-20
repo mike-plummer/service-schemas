@@ -65,7 +65,8 @@ export class KotlinSchemaComponent implements OnInit {
 
     getPropertiesForResourceType(resourceType: any): string[] {
         try {
-            // This will eventually be the "right" way to do reflection of Kotlin classes in JS
+            // This (I hope) will eventually be the "right" way to do reflection of Kotlin classes in JS
+            // Currently you can retrieve the KClass but most KClass methods throw a NotImplementedError
             // const kclass: any = kotlin.getKClass(resourceType);
             // console.log(kclass.qualifiedName);
             // console.log(kclass.supertypes);
@@ -76,7 +77,6 @@ export class KotlinSchemaComponent implements OnInit {
             const resource = new resourceType();
 
             if (resource instanceof kotlin.kotlin.Enum) {
-                // IS AN ENUM
                 return resourceType.values();
             }
 
