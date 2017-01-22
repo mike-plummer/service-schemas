@@ -37,17 +37,18 @@ Cons: KotlinJS limits classes that can be used in domain objects, not yet featur
 ## Requirements
 - Java 8
 - Gradle 3+
-- Node & NPM
+- Node & NPM (tested with Node v7.2.1, NPM v3.10.10)
 
 ## Instructions
 1. Clone this repo
 2. Navigate to `{project root}/client`
 3. Execute `npm install`
 3. Execute `npm start`
-4. Gradle will launch and perform the following
-    a. Download & extract KotlinJS runtime
-    b. Download dependencies
-    c. Compile Kotlin schema, generate KotlinJS, JSONSchema, and Reflective definitions
+4. NPM will invoke Gradle which will perform the following:
+    1. Download dependencies
+    2. Compile Kotlin schema
+    3. Generate KotlinJS, JSONSchema, and Reflective definitions
+    
 5. Once Gradle is finished NPM will launch Webpack which will deploy the example webapp
 6. Navigate to `http://localhost:8000` to view different schema definitions in action
 7. (Optional) Customize the schema
@@ -55,3 +56,6 @@ Cons: KotlinJS limits classes that can be used in domain objects, not yet featur
     b. Make an update to the Kotlin files under the `kotlin-schema` project. Add a field to the DTOs or a new package-level function to Utilities.kt
     c. Re-run `npm start` and load webapp - your new change should automatically appear in the schemas
 8. To quit type `ctrl-c`
+
+##Licensing
+This code is provided under the terms of the MIT license: basically you're free to do whatever you want with it, but no guarantees are made to its validity, stability, or safety. All works referenced by or utilized by this project are the property of their respective copyright holders and retain licensing that may be more restrictive.
