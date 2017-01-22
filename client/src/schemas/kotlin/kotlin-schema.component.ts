@@ -39,8 +39,8 @@ export class KotlinSchemaComponent extends AbstractSchemaComponent implements On
     getInheritance(resourceType: any): string {
         const baseClasses: any[] = get(resourceType, '$metadata$.baseClasses') as any[];
         if (baseClasses) {
-            const extensions = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === this.kotlin.TYPE.CLASS).map(clazz => clazz.name);
-            const implementations = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === this.kotlin.TYPE.TRAIT).map(clazz => clazz.name);
+            const extensions = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === this.kotlin.TYPE.CLASS).map(clazz => clazz.$metadata$.simpleName);
+            const implementations = baseClasses.filter(clazz => get(clazz, '$metadata$.type') === this.kotlin.TYPE.TRAIT).map(clazz => clazz.$metadata$.simpleName);
 
             let value = '';
             if (extensions.length) {
